@@ -11,18 +11,26 @@ const apiTransactionsController = {
 
       // if user found and address matches
       if (user && user.addressDoge === address) {
-        console.log(Date.now());
         // add transaction to user
         user.transactions.push({
-          amount,
+          amount: Number(amount),
           date: Date.now(),
         });
+        // add money tu user
+        console.log(user.balance, user, amount);
+        // user.balance = user.balance + amount;
         // save user
         await user.save();
         // send response
         return res.status(200).json({
           message: "Successful transaction",
-          transactions: user.transactions,
+          user: {
+            username: user.name,
+            address: user.addressDoge,
+            balance: user.balance,
+            transactions: user.transactions,
+            // accessToken,
+          },
         });
       } else {
         return res.status(401).json({ message: "Invalid credentials" });

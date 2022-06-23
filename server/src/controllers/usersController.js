@@ -1,3 +1,4 @@
+// require the function to create a token
 const createToken = require("../helpers/createToken");
 
 const UserModel = require("../models/User");
@@ -30,12 +31,17 @@ const apiUsersController = {
           email: user.email,
           transactions: user.transactions,
         });
+
         // we send the token with some data to the client
         return res.status(200).json({
           message: "Login successful",
-          username: user.name,
-          transactions: user.transactions,
-          accessToken,
+          user: {
+            username: user.name,
+            address: user.addressDoge,
+            balance: user.balance,
+            transactions: user.transactions,
+            accessToken,
+          },
         });
       } else {
         return res.status(401).json({ message: "Invalid credentials" });

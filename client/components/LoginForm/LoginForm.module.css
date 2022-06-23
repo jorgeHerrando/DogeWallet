@@ -1,0 +1,24 @@
+.loginForm {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border: 3px solid #6d8eeb;
+  border-radius: 10px;
+}
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.loginButton {
+  width: 100%;
+  margin-top: 20px;
+}
+.errorMessage {
+  color: #e94141;
+}
+.errorMessageTop {
+  color: #e94141;
+  margin-bottom: 15px;
+}
