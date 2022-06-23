@@ -23,7 +23,11 @@ export default function Header({ logged, handleLogout }) {
           </div>
         )}
 
-        <div className={headerStyles.titleContainer}>
+        <div
+          className={`${headerStyles.titleContainer} ${
+            !logged ? headerStyles.titleContainerNotLogged : ""
+          }`}
+        >
           <div className={headerStyles.dogeCoinIcon}>
             <img src="/img/icons/dogecoin.png" alt="dogecoin" />
           </div>
