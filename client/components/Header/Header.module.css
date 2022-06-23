@@ -1,3 +1,65 @@
 .headerContainer {
   padding: 20px 5%;
 }
+.innerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logoutContainer,
+.settingsIconContainer {
+  width: 20%;
+}
+.titleContainer {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.titleContainer h1 {
+  font-size: 30px;
+}
+
+.logoutArrow {
+  width: 25px;
+}
+.logoutArrow img {
+  width: 100%;
+  opacity: 0.4;
+}
+.logoutButton {
+  display: none;
+}
+
+.dogeCoinIcon {
+  width: 30px;
+  margin-right: 10px;
+}
+.dogeCoinIcon img {
+  width: 100%;
+}
+
+.settingsIcon {
+  width: 25px;
+  float: right;
+  cursor: pointer;
+}
+.settingsIcon img {
+  width: 100%;
+  transform: rotateY(180deg);
+  opacity: 0.4;
+}
+
+@media (min-width: 578px) {
+  .logoutButton {
+    display: block;
+  }
+  .logoutArrow {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  .headerContainer {
+    padding: 20px 50px;
+  }
+}
