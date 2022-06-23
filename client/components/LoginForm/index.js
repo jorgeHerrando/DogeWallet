@@ -7,6 +7,8 @@ import Form from "react-bootstrap/Form";
 import apiCalls from "../../apiCalls/apiCalls";
 import loginStyles from "./LoginForm.module.css";
 
+import ShowHide from "../showHide";
+
 export default function LoginForm() {
   const { storedValue, setValue } = useSessionStorage("user", null);
 
@@ -18,6 +20,8 @@ export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [validationMessage, setValidationMessage] = useState(null);
 
+  const [showData, setShowData] = useState(false);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
@@ -25,15 +29,13 @@ export default function LoginForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("hola2");
     setValidationMessage(null);
     setErrorMessage("");
     const processLogin = async () => {
       try {
         const loginResp = await apiCalls.login(data.email, data.password);
-        console.log("hola");
         if (loginResp.message === "Login successful") {
-          console.log(loginResp.user);
+          loginResp.user.transactions.reverse();
           setValue(loginResp.user);
           router.push("/dashboard");
         } else if (loginResp.errors) {
@@ -46,6 +48,10 @@ export default function LoginForm() {
       }
     };
     processLogin();
+  };
+
+  const showHide = () => {
+    setShowData(!showData);
   };
   return (
     <div className={loginStyles.loginFormContainer}>
@@ -67,12 +73,15 @@ export default function LoginForm() {
         )}
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            onChange={handleChange}
-          />
+          <div className={loginStyles.passwordInput}>
+            <Form.Control
+              type={showData ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              onChange={handleChange}
+            />
+            <ShowHide showData={showHide} />
+          </div>
         </Form.Group>
         {validationMessage && validationMessage.password && (
           <p className={loginStyles.errorMessage}>

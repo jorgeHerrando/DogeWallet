@@ -22,3 +22,6 @@
   color: #e94141;
   margin-bottom: 15px;
 }
+.passwordInput {
+  position: relative;
+}

@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
+import TransactionBox from "../components/TransactionBox";
 
 import useSessionStorage from "../hooks/useSessionStorage";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import Header from "../components/Header";
+
+import dashboardStyles from "../styles/Dashboard.module.css";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -25,7 +30,8 @@ export default function Dashboard() {
 
   // logout
   const handleLogout = () => {
-    setLoggedIn(false);
+    router.push("/login");
+    // setLoggedIn(false);
     setValue(null);
   };
 
@@ -33,22 +39,38 @@ export default function Dashboard() {
     <>
       <Header logged={loggedIn} handleLogout={handleLogout} />
       {/* if logged show the dashboard */}
-      {loading && <p>Loading...</p>}
-      {loggedIn ? (
-        <>
-          <h2>Welcome {storedValue.username}</h2>
-        </>
-      ) : (
-        !loading && (
+      <div className={dashboardStyles.dashboardContainer}>
+        <div className={dashboardStyles.dashboardTopContainer}>
+          {loading && <p>Loading...</p>}
+          {loggedIn && (
+            <>
+              <div>Foto transacciones</div>
+              <div className={dashboardStyles.buttonsContainer}>botones</div>
+            </>
+          )}
+          {!loading && !loggedIn && (
+            <>
+              <h2>Your are logged out</h2>
+              <p>
+                If you would like to access, you need to{" "}
+                <Link href="/login">
+                  <span className={dashboardStyles.loginLink}>login</span>
+                </Link>
+              </p>
+            </>
+          )}
+        </div>
+        {loggedIn && storedValue && (
           <>
-            <h2>Your are logged out</h2>
-            <p>
-              If you would like to access, you need to{" "}
-              <a onClick={() => router.push("/login")}>login</a>
-            </p>
+            {storedValue.transactions.map((transaction, i) => {
+              return <TransactionBox transaction={transaction} key={i} />;
+            })}
+            <div className={dashboardStyles.dashboardBottomContainer}>
+              parte de abajo
+            </div>
           </>
-        )
-      )}
+        )}
+      </div>
     </>
   );
 }

@@ -1,0 +1,22 @@
+.dashboardContainer {
+  background-color: #f8f8f8;
+}
+.dashboardTopContainer {
+  padding: 20px 5%;
+}
+
+.loginLink {
+  color: #87b26c;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.loginLink:hover {
+  color: #6d8eeb;
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .dashboardTopContainer {
+    padding: 20px 50px;
+  }
+}

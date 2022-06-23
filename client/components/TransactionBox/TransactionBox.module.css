@@ -1,0 +1,11 @@
+.transactionContainer {
+  margin-bottom: 1rem;
+}
+.transactionTime {
+  padding: 0 5%;
+  padding-bottom: 5px;
+}
+.transactionBox {
+  background-color: #fff;
+  padding: 10px 5%;
+}
