@@ -8,11 +8,36 @@
 }
 .transactionBox {
   background-color: #fff;
-  padding: 10px 5%;
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.transactionBoxLeft {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .downloadImgContainer {
   width: 40px;
+  margin-right: 20px;
 }
 .downloadImgContainer img {
   width: 100%;
+}
+.transactionReceivedContainer p:first-child {
+  font-weight: bold;
+}
+.transactionReceivedContainer p:last-child {
+  color: #a0a0a0;
+}
+.transactionBoxRight {
+  text-align: right;
+}
+.transactionBoxRight p:first-child {
+  font-weight: 500;
+  color: #7ebd6a;
+}
+.transactionBoxRight p:last-child {
+  font-weight: 500;
 }

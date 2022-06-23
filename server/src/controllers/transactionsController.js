@@ -6,8 +6,10 @@ const { validationResult } = require("express-validator");
 const apiTransactionsController = {
   addMoney: async (req, res) => {
     try {
-      const user = await UserModel.findOne({ email: req.user.email });
+      const user = await UserModel.findOne({ addressDoge: req.body.address });
       const { address, amount } = req.body;
+      const authHeader = req.headers.authorization;
+      const token = authHeader.split(" ")[1];
 
       // if user found and address matches
       if (user && user.addressDoge === address) {
@@ -28,7 +30,7 @@ const apiTransactionsController = {
             address: user.addressDoge,
             balance: user.balance,
             transactions: user.transactions,
-            // accessToken,
+            accessToken: token,
           },
         });
       } else {

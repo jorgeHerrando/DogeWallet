@@ -20,7 +20,7 @@ const apiCalls = {
         "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ amount, wallet }),
+      body: JSON.stringify({ amount, address: wallet }),
     });
     const data = await call.json();
     return data;

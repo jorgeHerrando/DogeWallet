@@ -15,6 +15,31 @@
   color: #6d8eeb;
   text-decoration: underline;
 }
+.balance {
+  font-weight: bold;
+  font-size: 20px;
+}
+.balanceDolar {
+  color: #696969;
+  font-weight: 500;
+  font-size: 18px;
+}
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.buttonsContainer button {
+  color: #fff;
+  width: 50%;
+}
+.buttonsContainer button:first-child {
+  margin-right: 5px;
+}
+.buttonsContainer button:last-child {
+  margin-left: 5px;
+}
 
 @media (min-width: 768px) {
   .dashboardTopContainer {

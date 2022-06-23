@@ -27,27 +27,24 @@ export default function LoginForm() {
     setData({ ...data, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setValidationMessage(null);
     setErrorMessage("");
-    const processLogin = async () => {
-      try {
-        const loginResp = await apiCalls.login(data.email, data.password);
-        if (loginResp.message === "Login successful") {
-          loginResp.user.transactions.reverse();
-          setValue(loginResp.user);
-          router.push("/dashboard");
-        } else if (loginResp.errors) {
-          setValidationMessage(loginResp.errors);
-        } else {
-          setErrorMessage(loginResp.message);
-        }
-      } catch (e) {
-        console.log(e);
+    try {
+      const loginResp = await apiCalls.login(data.email, data.password);
+      if (loginResp.message === "Login successful") {
+        loginResp.user.transactions.reverse();
+        setValue(loginResp.user);
+        router.push("/dashboard");
+      } else if (loginResp.errors) {
+        setValidationMessage(loginResp.errors);
+      } else {
+        setErrorMessage(loginResp.message);
       }
-    };
-    processLogin();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const showHide = () => {
