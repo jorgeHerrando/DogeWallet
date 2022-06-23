@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -10,11 +11,24 @@ import apiCalls from "../../apiCalls/apiCalls";
 import addMoneyModalStyles from "./AddMoneyModal.module.css";
 
 export default function AddMoneyModal(props) {
+  const router = useRouter();
   const { storedValue, setValue } = useSessionStorage("user", null);
+  const [success, setSuccess] = useState(false);
+  const [validationMessage, setValidationMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [data, setData] = useState({
     amount: "",
     address: props.address,
   });
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess(false);
+        props.onHide();
+      }, 3000);
+    }
+  }, [success]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -31,14 +45,14 @@ export default function AddMoneyModal(props) {
       );
       if (addMoneyResp.message === "Successful transaction") {
         addMoneyResp.user.transactions.reverse();
-        console.log(addMoneyResp);
-        props.onHide();
-        //     setValue(loginResp.user);
-        //     router.push("/dashboard");
-        //   } else if (loginResp.errors) {
-        //     setValidationMessage(loginResp.errors);
-        //   } else {
-        //     setErrorMessage(loginResp.message);
+        setSuccess(true);
+        console.log(addMoneyResp.user.id);
+        props.fetchUser(addMoneyResp.user.id);
+        setValue(addMoneyResp.user);
+      } else if (addMoneyResp.message === "Invalid credentials") {
+        setValidationMessage(addMoneyResp.message);
+      } else {
+        setErrorMessage(addMoneyResp.message);
       }
     } catch (e) {
       console.log(e);
@@ -63,11 +77,6 @@ export default function AddMoneyModal(props) {
               onChange={handleChange}
             />
           </Form.Group>
-          {/* {validationMessage && validationMessage.email && (
-            <p className={addMoneyModalStyles.errorMessageTop}>
-              {validationMessage.email.msg}
-            </p>
-          )} */}
           <Form.Group className="mb-3" controlId="address">
             <Form.Label>Address</Form.Label>
             <div className={addMoneyModalStyles.addressInput}>
@@ -81,14 +90,19 @@ export default function AddMoneyModal(props) {
               />
             </div>
           </Form.Group>
-          {/* {validationMessage && validationMessage.password && (
-            <p className={addMoneyModalStyles.errorMessage}>
-              {validationMessage.password.msg}
+          {success && (
+            <p className={addMoneyModalStyles.successMessage}>
+              Money added to your wallet successfully
             </p>
-          )} */}
-          {/* {errorMessage && (
+          )}
+          {validationMessage && (
+            <p className={addMoneyModalStyles.errorMessage}>
+              {validationMessage}
+            </p>
+          )}
+          {errorMessage && (
             <p className={addMoneyModalStyles.errorMessage}>{errorMessage}</p>
-          )} */}
+          )}
           <div className={addMoneyModalStyles.buttonsContainer}>
             <Button
               variant="success"

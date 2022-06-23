@@ -1,5 +1,3 @@
-const createToken = require("../helpers/createToken");
-
 const UserModel = require("../models/User");
 const { validationResult } = require("express-validator");
 
@@ -26,6 +24,7 @@ const apiTransactionsController = {
         return res.status(200).json({
           message: "Successful transaction",
           user: {
+            id: user._id,
             username: user.name,
             address: user.addressDoge,
             balance: user.balance,

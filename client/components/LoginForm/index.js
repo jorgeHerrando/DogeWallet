@@ -36,7 +36,7 @@ export default function LoginForm() {
       if (loginResp.message === "Login successful") {
         loginResp.user.transactions.reverse();
         setValue(loginResp.user);
-        router.push("/dashboard");
+        router.push(`/dashboard/${loginResp.user.id}`);
       } else if (loginResp.errors) {
         setValidationMessage(loginResp.errors);
       } else {

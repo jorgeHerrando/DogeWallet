@@ -36,6 +36,7 @@ const apiUsersController = {
         return res.status(200).json({
           message: "Login successful",
           user: {
+            id: user._id,
             username: user.name,
             address: user.addressDoge,
             balance: user.balance,
@@ -45,6 +46,32 @@ const apiUsersController = {
         });
       } else {
         return res.status(401).json({ message: "Invalid credentials" });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Server error" });
+    }
+  },
+
+  // get user data
+  getUser: async (req, res) => {
+    try {
+      const user = await UserModel.findOne({ _id: req.params.id });
+
+      if (user) {
+        user.transactions = user.transactions.reverse();
+        return res.status(200).json({
+          message: "User found",
+          user: {
+            id: user._id,
+            username: user.name,
+            address: user.addressDoge,
+            balance: user.balance,
+            transactions: user.transactions,
+          },
+        });
+      } else {
+        return res.status(404).json({ message: "User not found" });
       }
     } catch (error) {
       console.log(error);

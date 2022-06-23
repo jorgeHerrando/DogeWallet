@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import TransactionBox from "../components/TransactionBox";
-import ShowHide from "../components/showHide";
-import AddMoneyModal from "../components/AddMoneyModal";
+import TransactionBox from "../../components/TransactionBox";
+import ShowHide from "../../components/showHide";
+import AddMoneyModal from "../../components/AddMoneyModal";
 
-import useSessionStorage from "../hooks/useSessionStorage";
+import apiCalls from "../../apiCalls/apiCalls";
+
+import useSessionStorage from "../../hooks/useSessionStorage";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
-import dashboardStyles from "../styles/Dashboard.module.css";
+import dashboardStyles from "../../styles/Dashboard.module.css";
 
-export default function Dashboard() {
+export default function Dashboard({ userFetched }) {
   const dolarDivision = 500;
   const router = useRouter();
   const { storedValue, setValue } = useSessionStorage("user", null);
@@ -22,15 +24,26 @@ export default function Dashboard() {
 
   const [modalShow, setModalShow] = useState(false);
 
+  const [user, setUser] = useState(userFetched);
+
+  const fetchUser = async (id) => {
+    const userResp = await apiCalls.getUser(id);
+    return setUser(userResp.user);
+  };
+
   // loading effect
   useEffect(() => {
     setLoading(false);
+    setUser(userFetched);
   }, []);
 
   // check if there is a user in the session
   useEffect(() => {
-    if (storedValue) {
+    if (storedValue && storedValue.id === user.id) {
       setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+      setValue(null);
     }
   }, [storedValue]);
 
@@ -57,10 +70,10 @@ export default function Dashboard() {
               <div>Foto transacciones</div>
               <div className={dashboardStyles.balancesContainer}>
                 <p className={dashboardStyles.balance}>
-                  {showData ? storedValue.balance : "***"} DOGE
+                  {showData ? user.balance : "***"} DOGE
                 </p>
                 <p className={dashboardStyles.balanceDolar}>
-                  ${showData ? storedValue.balance / dolarDivision : "***"}
+                  ${showData ? user.balance / dolarDivision : "***"}
                 </p>
               </div>
               <div className={dashboardStyles.buttonsContainer}>
@@ -72,7 +85,8 @@ export default function Dashboard() {
               <AddMoneyModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-                address={storedValue.address}
+                address={user.address}
+                fetchUser={fetchUser}
               />
               <ShowHide showData={showHide} />
             </>
@@ -91,7 +105,7 @@ export default function Dashboard() {
         </div>
         {loggedIn && storedValue && (
           <>
-            {storedValue.transactions.map((transaction, i) => {
+            {user.transactions.map((transaction, i) => {
               return (
                 <TransactionBox
                   transaction={transaction}
@@ -105,4 +119,13 @@ export default function Dashboard() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const userFetched = await apiCalls.getUser(context.params.id);
+  return {
+    props: {
+      userFetched: userFetched.user,
+    },
+  };
 }

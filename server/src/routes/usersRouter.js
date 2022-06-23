@@ -11,7 +11,8 @@ const usersController = require("../controllers/usersController");
 
 // Login
 router.post("/login", loginFormValidation, usersController.login);
-// router.get("/login", authToken, usersController.hola);
-// router.post("/logout", authToken, usersController.hola);
+
+// Get user
+router.get("/:id", usersController.getUser);
 
 module.exports = router;
