@@ -25,12 +25,15 @@ export default function LoginForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("hola2");
     setValidationMessage(null);
     setErrorMessage("");
     const processLogin = async () => {
       try {
         const loginResp = await apiCalls.login(data.email, data.password);
+        console.log("hola");
         if (loginResp.message === "Login successful") {
+          console.log(loginResp.user);
           setValue(loginResp.user);
           router.push("/dashboard");
         } else if (loginResp.errors) {

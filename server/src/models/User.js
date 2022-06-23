@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
       },
     },
   ],
+  balance: {
+    type: Number,
+    required: true,
+  },
 });
 
 const userModel = mongoose.model("users", UserSchema);

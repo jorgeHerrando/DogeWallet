@@ -17,8 +17,7 @@ const apiTransactionsController = {
           date: Date.now(),
         });
         // add money tu user
-        console.log(user.balance, user, amount);
-        // user.balance = user.balance + amount;
+        user.balance = user.balance + Number(amount);
         // save user
         await user.save();
         // send response
