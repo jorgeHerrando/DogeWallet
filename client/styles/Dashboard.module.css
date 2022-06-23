@@ -1,5 +1,6 @@
 .dashboardContainer {
   background-color: #f8f8f8;
+  position: relative;
 }
 .dashboardTopContainer {
   padding: 20px 5%;

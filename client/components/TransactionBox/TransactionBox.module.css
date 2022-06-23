@@ -4,8 +4,15 @@
 .transactionTime {
   padding: 0 5%;
   padding-bottom: 5px;
+  color: #989898;
 }
 .transactionBox {
   background-color: #fff;
   padding: 10px 5%;
+}
+.downloadImgContainer {
+  width: 40px;
+}
+.downloadImgContainer img {
+  width: 100%;
 }

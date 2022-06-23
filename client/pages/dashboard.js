@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
 import TransactionBox from "../components/TransactionBox";
+import ShowHide from "../components/showHide";
 
 import useSessionStorage from "../hooks/useSessionStorage";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ export default function Dashboard() {
   const { storedValue, setValue } = useSessionStorage("user", null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showData, setShowData] = useState(false);
 
   // loading effect
   useEffect(() => {
@@ -35,6 +36,10 @@ export default function Dashboard() {
     setValue(null);
   };
 
+  const showHide = () => {
+    setShowData(!showData);
+  };
+
   return (
     <>
       <Header logged={loggedIn} handleLogout={handleLogout} />
@@ -44,7 +49,10 @@ export default function Dashboard() {
           {loading && <p>Loading...</p>}
           {loggedIn && (
             <>
-              <div>Foto transacciones</div>
+              <div>
+                Foto transacciones
+                <ShowHide showData={showHide} />
+              </div>
               <div className={dashboardStyles.buttonsContainer}>botones</div>
             </>
           )}
@@ -63,11 +71,14 @@ export default function Dashboard() {
         {loggedIn && storedValue && (
           <>
             {storedValue.transactions.map((transaction, i) => {
-              return <TransactionBox transaction={transaction} key={i} />;
+              return (
+                <TransactionBox
+                  transaction={transaction}
+                  show={showData}
+                  key={i}
+                />
+              );
             })}
-            <div className={dashboardStyles.dashboardBottomContainer}>
-              parte de abajo
-            </div>
           </>
         )}
       </div>
